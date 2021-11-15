@@ -55,7 +55,7 @@ class EmpleadoController{
             }
         }
         catch(Exception $e){
-            $payload = json_encode(array("Error" => $e));
+            $payload = json_encode(array("Error" => $e->message));
         }
 
         $response->getBody()->write($payload);
@@ -109,7 +109,28 @@ class EmpleadoController{
 
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function ListarEmpleadosCSV($request, $response, $args){
+
+        $archivoLectura = './consultacsv/consultas.csv';
+        try{
+            $empleados = Empleado::ConsultarEmpleados();
+            //var_dump($empleados);
+            foreach($empleados as $e){
+                ArchivoCSV::Escribir($e, $archivoLectura);
+                $payload = json_encode(array("Message:" => "Ver consulta en $archivoLectura"));
+            }
             
         }
+        catch(Exception $e){
+            $payload = json_encode(array("Error" => $e->message));
+        } 
+       
+
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
 }
 ?>

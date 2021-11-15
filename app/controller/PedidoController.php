@@ -22,25 +22,12 @@ class PedidoController{
             $payload = json_encode(array("Se creo el pedido: " => $pedido));
         }
         catch(Exception $e){
-            $payload = json_encode(array("Error" => $e));
+            $payload = json_encode(array("Error" => $e->message));
         }
 
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
-
-    // public function ListarPedidos($request, $response, $args){
-    //     try{
-    //         $pedidos = Pedido::ConsultarPedidos();
-    //         $payload = json_encode(array("Pedidos" => $pedidos));
-    //     }
-    //     catch(Exception $e){
-    //         $payload = json_encode(array("Error" => $e));
-    //     }
-        
-    //     $response->getBody()->write($payload);
-    //     return $response->withHeader('Content-Type', 'application/json');
-    // }
 
     public function BuscarPedidoPorCodigo($request, $response, $args){
 
@@ -57,7 +44,7 @@ class PedidoController{
             
         }
         catch(Exception $e){
-            $payload = json_encode(array("Error" => $e));
+            $payload = json_encode(array("Error" => $e->message));
         }
         
         $response->getBody()->write($payload);
@@ -82,17 +69,12 @@ class PedidoController{
             }
         }
         catch(Exception $e){
-            $payload = json_encode(array("Error" => $e));
+            $payload = json_encode(array("Error" => $e->message));
             $response->getBody()->write($payload);
         }
         
         
         return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function CerrarPedido($request, $response, $args){
-        ///ACA DEBERIA CALCULAR EL PRECIO FINAL
-        //CAMBIAR EL ESTADO DEL PEDIDO
     }
 
     public function ListarPedidos($request, $response, $args){

@@ -45,7 +45,6 @@ $app->group('/empleados', function (RouteCollectorProxy $group) {
     $group->get('[/]', \EmpleadoController::class . ':ListarEmpleados');
     $group->get('/{usuario}', \EmpleadoController::class . ':ObtenerEmpleado');
     $group->post('[/]', \EmpleadoController::class . ':CrearEmpleado');
-    $group->post('/{csv}', \EmpleadoController::class . ':CrearEmpleadosDesdeCSV');
   })->add(\ValidardorSectorMdw::class . ':ValidarSiEsSocio')->add(\ValidadadorParamsMdw::class . ':ValidarToken');
 
 $app->group('/menu', function (RouteCollectorProxy $group) {
@@ -54,9 +53,11 @@ $app->group('/menu', function (RouteCollectorProxy $group) {
 })->add(\ValidadadorParamsMdw::class . ':ValidarToken');
 
 $app->group('/mesa', function (RouteCollectorProxy $group) {
-  $group->get('[/]', \MesaController::class . ':ListarMesas')->add(\ValidardorSectorMdw::class . ':ValidarSiEsSocio');
+  $group->get('[/]', \MesaController::class . ':ListarMesas');
   $group->post('[/]', \MesaController::class . ':CrearMesa');
   $group->put('[/]', \MesaController::class . ':CambiarEstadoMesa')->add(\ValidardorEstadosMdw::class . ':ValidarEstadosMesa');
+  $group->put('/{codigo}', \MesaController::class . ':CerrarMesa');
+
 })->add(\ValidadadorParamsMdw::class . ':ValidarToken');
 
 $app->group('/pedido', function (RouteCollectorProxy $group) {
@@ -71,5 +72,9 @@ $app->group('/login', function (RouteCollectorProxy $group) {
   $group->post('[/]', \LoginController::class . ':Login')->add(\ValidadadorParamsMdw::class . ':ValidarParamsLogin');
 });
 
+$app->group('/empleadocsv', function (RouteCollectorProxy $group) {
+  $group->get('[/]', \EmpleadoController::class . ':ListarEmpleadosCSV');
+  $group->post('[/]', \EmpleadoController::class . ':CrearEmpleadosDesdeCSV');
+});
 
 $app->run();

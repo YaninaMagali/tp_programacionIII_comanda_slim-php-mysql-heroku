@@ -22,7 +22,7 @@ class MenuController{
             $payload = json_encode(array("mensaje" => "Item de menu creado con exito"));
         }
         catch(Exceptionn $e){
-            $payload = json_encode(array("Error" => $e));
+            $payload = json_encode(array("Error" => $e->message));
         }
 
         $response->getBody()->write($payload);
@@ -36,7 +36,7 @@ class MenuController{
             $payload = json_encode(array("Items menu" => $itemsMenu));
         }
         catch(Exception $e){
-            $payload = json_encode(array("Error" => $e));
+            $payload = json_encode(array("Error" => $e->message));
         }
 
         $response->getBody()->write($payload);

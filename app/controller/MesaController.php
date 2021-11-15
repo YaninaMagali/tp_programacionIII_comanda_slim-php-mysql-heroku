@@ -50,7 +50,22 @@ class MesaController{
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
+
+    public static function CerrarMesa($args){
+
+        if($codigo = $args['codigo']){
+            try{
+                if(Mesa::ActualizarEstadoMesa('cerrada', $codigo)){
+                    $payload = json_encode(array("Message" => "Se cerro la mesa $codigo"));
+                }
+            }
+            catch(Exception $e){
+                $payload = json_encode(array("Error" => $e->message));
+            }
+
+        }
+    }
+
+
 }
-
-
 ?>

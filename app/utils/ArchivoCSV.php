@@ -71,16 +71,17 @@ class ArchivoCSV
     Recibe la informacion a escribir en el CSV y el path de archivo que se va a escribir
     No devuelve nada
     */
-    static function Escribir($data, $archivo)
+    public static function Escribir($data, $archivo)
     {
         $file = null;
         $datos = [(array)$data];
         try
         {
             $file = fopen($archivo, "a");
-            foreach ( $datos as $dato ) 
+            foreach ($datos as $dato ) 
             {
-
+                // echo("///////");
+                // var_dump($dato);
                 fputcsv($file, $dato);
             }
         }
@@ -90,8 +91,6 @@ class ArchivoCSV
         }
         finally
         {
-            echo "en finnaly";
-            echo $file;
             if($file)
             {
                 fclose($file);
