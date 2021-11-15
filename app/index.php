@@ -19,6 +19,7 @@ require_once './controller/PedidoController.php';
 require_once './controller/LoginController.php';
 require_once './middleware/ValidadadorParamsMdw.php';
 require_once './middleware/ValidardorSectorMdw.php';
+require_once './middleware/ValidardorEstadosMdw.php';
 require_once './database/DAO.php';
 require_once './errorLog.php';
 
@@ -55,13 +56,14 @@ $app->group('/menu', function (RouteCollectorProxy $group) {
 $app->group('/mesa', function (RouteCollectorProxy $group) {
   $group->get('[/]', \MesaController::class . ':ListarMesas')->add(\ValidardorSectorMdw::class . ':ValidarSiEsSocio');
   $group->post('[/]', \MesaController::class . ':CrearMesa');
+  $group->put('[/]', \MesaController::class . ':CambiarEstadoMesa')->add(\ValidardorEstadosMdw::class . ':ValidarEstadosMesa');
 })->add(\ValidadadorParamsMdw::class . ':ValidarToken');
 
 $app->group('/pedido', function (RouteCollectorProxy $group) {
   $group->get('[/]', \PedidoController::class . ':ListarPedidosPendientesPorSector')->add(\ValidadadorParamsMdw::class . ':ValidarToken');
   $group->get('/{codigo}', \PedidoController::class . ':BuscarPedidoPorCodigo');
   $group->post('[/]', \PedidoController::class . ':CrearPedido')->add(\JsonBodyParserMiddleware::class . ':process')->add(\ValidardorSectorMdw::class . ':ValidarSiEsMozo')->add(\ValidadadorParamsMdw::class . ':ValidarToken');
-  $group->put('[/]', \PedidoController::class . ':EditarEstadoPedido')->add(\ValidadadorParamsMdw::class . ':ValidarToken');
+  $group->put('[/]', \PedidoController::class . ':EditarEstadoPedido')->add(\ValidardorEstadosMdw::class . ':ValidarEstadoPedido')->add(\ValidadadorParamsMdw::class . ':ValidarToken');
 });
 
 

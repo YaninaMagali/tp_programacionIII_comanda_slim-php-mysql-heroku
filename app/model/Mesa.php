@@ -38,5 +38,47 @@ class Mesa{
         }
     }
 
+    public static function ConsultarMesa($codigo){
+
+        try{
+            $dao = new DAO();
+            $query = $dao->prepararConsulta("SELECT * FROM mesas WHERE codigo = :codigo;");
+            $query->bindValue(':codigo', $codigo, PDO::PARAM_STR);
+            if($query->execute())
+            {
+                return $query->fetchAll(PDO::FETCH_CLASS, 'Mesa');
+            }
+            else
+            {
+                return false;
+            } 
+        }
+        catch(Exception $e){
+            throw $e;
+        }
+    }
+
+    public static function ActualizarEstadoMesa($estado, $codigo){
+
+        try{
+            $dao = new DAO();
+            $query = $dao->prepararConsulta("UPDATE mesas SET estado = :estado WHERE codigo = :codigo;");
+            $query->bindValue(':estado', $estado, PDO::PARAM_STR);
+            $query->bindValue(':codigo', $codigo, PDO::PARAM_STR);
+
+            if($query->execute())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch(Exception $e){
+            throw $e;
+        }
+    }
+
 }
 ?>

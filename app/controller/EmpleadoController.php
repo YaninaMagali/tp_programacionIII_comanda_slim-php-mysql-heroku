@@ -20,7 +20,7 @@ class EmpleadoController{
             $payload = json_encode(array("mensaje" => $empleado));
         }
         catch(Exception $e){
-            $payload = json_encode(array("Error" => $e));
+            $payload = json_encode(array("Error" => $e->message));
         }
 
         $response->getBody()->write($payload);
@@ -34,7 +34,7 @@ class EmpleadoController{
             $payload = json_encode(array("empleados" => $empleados));
         }
         catch(Exception $e){
-            $payload = json_encode(array("Error" => $e));
+            $payload = json_encode(array("Error" => $e->message));
         }        
 
         $response->getBody()->write($payload);
@@ -78,7 +78,7 @@ class EmpleadoController{
             return $sector;
         }
         catch(Exception $e){
-            $payload = json_encode(array("Error" => $e));
+            $payload = json_encode(array("Error" => $e->message));
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json');
         }  
