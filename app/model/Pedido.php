@@ -135,7 +135,24 @@ class Pedido
             $query->bindValue(':estado', $estado, PDO::PARAM_STR);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_CLASS, 'Pedido');  
-            //return $query->fetchAll();         
+        }
+        catch(Exception $e){
+            throw $e;
+        }
+    }
+
+    public static function ConsultarPedidosPorEstado($estado){
+
+        try{
+            $dao = new DAO();
+            $query = $dao->prepararConsulta("SELECT pedidos.id, pedidos.codigo, menu_pedido.estado, pedidos.imagen, pedidos.nombreCliente, pedidos.idMesa, pedidos.totalAPagar, menu_pedido.cantidad, menu.descripcion, menu_pedido.tiempo_preparacion 
+            FROM `menu_pedido` 
+            INNER JOIN menu ON menu.id = menu_pedido.id_item_menu 
+            INNER JOIN pedidos ON pedidos.id = menu_pedido.id_pedido
+            WHERE menu_pedido.estado = :estado;");
+            $query->bindValue(':estado', $estado, PDO::PARAM_STR);
+            $query->execute();
+            return $query->fetchAll(PDO::FETCH_CLASS, 'Pedido');  
         }
         catch(Exception $e){
             throw $e;

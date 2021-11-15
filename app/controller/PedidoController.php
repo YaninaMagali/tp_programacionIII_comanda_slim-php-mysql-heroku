@@ -95,22 +95,27 @@ class PedidoController{
         //CAMBIAR EL ESTADO DEL PEDIDO
     }
 
-    public function ListarPedidosPendientesPorSector($request, $response, $args){
-
-        echo "ListarPedidosPorSector. SECTOR:";
+    public function ListarPedidos($request, $response, $args){
         
         $sector = EmpleadoController::ObtenerSectorEmpleadoDeJWT($request, $response, $args);
         
         if($sector !=  false){
-            if($sector == 'SOCIO' || $sector == 'MOZO'){
-                $pedidos = Pedido::ConsultarPedidos();
-                $payload = json_encode(array("Pedidos" => $pedidos)); 
-                $response->getBody()->write($payload);
-            }
-            else{
-                $pedidos = Pedido::ConsultarPedidosPorSectorYEstado($sector, 'NUEVO');
-                $payload = json_encode(array("Pedidos" => $pedidos)); 
-                $response->getBody()->write($payload);
+            switch($sector){
+                case 'SOCIO':
+                    $pedidos = Pedido::ConsultarPedidos();
+                    $payload = json_encode(array("Pedidos" => $pedidos)); 
+                    $response->getBody()->write($payload);
+                    break;
+                case 'MOZO':
+                    $pedidos = Pedido::ConsultarPedidosPorEstado('listo_para_servir');
+                    $payload = json_encode(array("Pedidos" => $pedidos)); 
+                    $response->getBody()->write($payload);
+                    break;
+                default:
+                    $pedidos = Pedido::ConsultarPedidosPorSectorYEstado($sector, 'pendiente');
+                    $payload = json_encode(array("Pedidos" => $pedidos)); 
+                    $response->getBody()->write($payload);
+                    break;
             }
         }  
         

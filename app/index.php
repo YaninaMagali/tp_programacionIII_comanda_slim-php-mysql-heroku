@@ -60,7 +60,7 @@ $app->group('/mesa', function (RouteCollectorProxy $group) {
 })->add(\ValidadadorParamsMdw::class . ':ValidarToken');
 
 $app->group('/pedido', function (RouteCollectorProxy $group) {
-  $group->get('[/]', \PedidoController::class . ':ListarPedidosPendientesPorSector')->add(\ValidadadorParamsMdw::class . ':ValidarToken');
+  $group->get('[/]', \PedidoController::class . ':ListarPedidos')->add(\ValidadadorParamsMdw::class . ':ValidarToken');
   $group->get('/{codigo}', \PedidoController::class . ':BuscarPedidoPorCodigo');
   $group->post('[/]', \PedidoController::class . ':CrearPedido')->add(\JsonBodyParserMiddleware::class . ':process')->add(\ValidardorSectorMdw::class . ':ValidarSiEsMozo')->add(\ValidadadorParamsMdw::class . ':ValidarToken');
   $group->put('[/]', \PedidoController::class . ':EditarEstadoPedido')->add(\ValidardorEstadosMdw::class . ':ValidarEstadoPedido')->add(\ValidadadorParamsMdw::class . ':ValidarToken');
